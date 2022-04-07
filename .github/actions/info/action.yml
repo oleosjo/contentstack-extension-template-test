@@ -1,0 +1,45 @@
+---
+
+name: 'Info'
+description: 'Resolves variables for contentstack extensions'
+
+inputs:
+  tag:
+    description: 'The GH tag to deploy'
+    type: string
+    requred: true
+  environment:
+    description: 'The environment to deploy to'
+    type: choice
+    options:
+      - staging
+      - production
+    default: staging
+
+outputs:
+  name:
+    description: 'The name of the extension'
+    value: ${{ steps.info.outputs.name }}
+  tag:
+    description: 'The tag being deployed'
+    value: ${{ steps.info.outputs.tag }}
+  bucket:
+    description: 'The s3 bucket to deploy assets to'
+    value: ${{ steps.info.outputs.bucket }}
+  bucket-path:
+    description: 'The path on the s3 bucket to deploy assets to'
+    value: ${{ steps.info.outputs.bucket-path }}
+  public-url:
+    description: 'The public url to use with this extension'
+    value: ${{ steps.info.outputs.public-url }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Get info'
+      id: info
+      shell: bash
+      run: ${{ github.action_path }}/info.sh "${{ inputs.environment }}" "${{ inputs.tag }}"
+      env:
+        REPOSITORY: ${{ github.repository }}
+        REF_NAME: ${{ github.ref_name }}

@@ -1,0 +1,63 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-prettier"
+  ],
+  "ignoreFiles": "public/assets/stylesheets/*",
+  "plugins": [
+    "stylelint-declaration-use-variable",
+    "stylelint-order",
+    "stylelint-scss"
+  ],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "color-named": [
+      "never",
+      {
+        "ignore": [
+          "inside-function"
+        ]
+      }
+    ],
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {}
+    ],
+    "sh-waqar/declaration-use-variable": [
+      [
+        "color",
+        {
+          "ignoreValues": [
+            "transparent",
+            "inherit",
+            "#FFF",
+            "#000"
+          ]
+        }
+      ]
+    ],
+    "declaration-empty-line-before": "never",
+    "declaration-property-value-disallowed-list": {
+      "/^border/": [
+        "none"
+      ]
+    },
+    "order/order": [
+      "declarations"
+    ],
+    "order/properties-alphabetical-order": true,
+    "selector-class-pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+    "shorthand-property-no-redundant-values": true,
+    "function-parentheses-space-inside": "never-single-line",
+    "no-descending-specificity": null,
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      {
+        "ignoreFontFamilies": [
+          "Material Icons"
+        ]
+      }
+    ]
+  }
+}

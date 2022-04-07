@@ -1,0 +1,8 @@
+---
+
+name: contentstack-extension-template
+type: template
+team: web
+tags:
+  language: typescript
+  dependencies: npm

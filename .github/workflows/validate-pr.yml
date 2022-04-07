@@ -1,0 +1,52 @@
+---
+
+name: 'Validate pull request'
+
+on:
+  - pull_request
+  - workflow_call
+  - workflow_dispatch
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  pre-commit:
+    name: 'Pre-commit check'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup nodejs'
+        uses: shopsmart/github-actions/actions/npm-setup@v1
+
+      - name: 'Pre-commit check'
+        uses: pre-commit/action@v2.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  lint-code:
+    name: 'Lint code'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Run lint'
+        uses: shopsmart/github-actions/actions/npm-run@v1
+        with:
+          command: lint
+
+  unit-test:
+    name: 'Run unit tests'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Run unit tests'
+        uses: shopsmart/github-actions/actions/npm-run@v1
+        with:
+          command: test

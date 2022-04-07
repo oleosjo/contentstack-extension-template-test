@@ -1,0 +1,62 @@
+---
+repository:
+  name: contentstack-extension-template
+  description: A template repo for creating a new contentstack extension
+  private: true
+  has_issues: true
+  default_branch: main
+  allow_squash_merge: true
+  allow_merge_commit: true
+  allow_rebase_merge: true
+  enable_automated_security_fixes: true
+  enable_vulnerability_alerts: true
+
+teams:
+  - name: tech-ops-team
+    permission: admin
+  - name: web-team
+    permission: admin
+  - name: developers
+    permission: push
+  - name: vault
+    permissions: push
+
+branches:
+  - name: main
+    protection:
+      required_pull_request_reviews:
+        required_approving_review_count: 2
+        dismiss_stale_reviews: false
+        require_code_owner_reviews: true
+        dismissal_restrictions: {}
+      required_status_checks:
+        strict: false
+        contexts:
+          - Pre-commit check
+          - Lint code
+          - Run unit tests
+      enforce_admins: false
+      required_linear_history: true
+      restrictions:
+        apps: []
+        teams: []
+        users: []
+  - name: '*-base'
+    protection:
+      required_pull_request_reviews:
+        required_approving_review_count: 2
+        dismiss_stale_reviews: false
+        require_code_owner_reviews: true
+        dismissal_restrictions: {}
+      required_status_checks:
+        strict: false
+        contexts:
+          - Pre-commit check
+          - Lint code
+          - Run unit tests
+      enforce_admins: false
+      required_linear_history: true
+      restrictions:
+        apps: []
+        teams: []
+        users: []

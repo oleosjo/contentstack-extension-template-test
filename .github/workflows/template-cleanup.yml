@@ -1,0 +1,73 @@
+---
+
+name: 'Template Cleanup'
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-latest
+    if: "!(endsWith(github.repository, 'contentstack-extension-template'))"
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        # @see https://github.com/marketplace/actions/github-commit-push
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+      - name: 'Cleanup'
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          REPO=${REPO#*/}
+
+          # Modify the bd configuration
+          sed -i 's/^name:.*/name: '"$REPO"'/g' .bd.yml
+          sed -i 's/^type:.*/type: library/g' .bd.yml
+
+          # Modify the github settings
+          sed -i 's/name: contentstack-extension-template/name: '"$REPO"'/g' .github/settings.yml
+
+          # Modify github workflows
+          sed -i 's/contentstack-extension-template/'"$REPO"'/g' .github/workflows/publish-release.yml
+
+          # Modify package.json
+          sed -i 's/contentstack-extension-template/'"$REPO"'/g' package.json
+          npm install
+
+          # Last step is to delete itself
+          git rm -f .github/workflows/template-cleanup.yml
+
+      # Create cleanup PR
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.TEMPLATE_CLEANUP_GITHUB_TOKEN }}
+          branch: github/template-cleanup
+          base: main
+          committer: "GitHub Action <action@github.com>"
+          commit-message: Clean up template repo artifacts
+          title: Template cleanup
+          body: |
+            ## Problem
+
+            After cloning this repo from a template, there are some residual artifacts that need modification or deletion.
+
+            ## Solution
+
+            Run cleanup steps and then delete this workflow.
+
+            ## Notes
+
+            Please manually set the description in:
+              - .github/settings.yml
+              - package.json

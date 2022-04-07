@@ -1,0 +1,6 @@
+# All PRs must be approved through the web team
+*                     @shopsmart/web
+
+# Protect github settings
+.github/CODEOWNERS    @shopsmart/tech-ops
+.github/settings.yml  @shopsmart/tech-ops

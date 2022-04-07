@@ -1,0 +1,112 @@
+{
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "react",
+    "prettier"
+  ],
+  "extends": [
+    "prettier",
+    "react-app",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error"
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "@typescript-eslint/explicit-function-return-type": [
+      "error"
+    ],
+    "lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": true
+      }
+    ],
+    "space-before-function-paren": [
+      "off"
+    ],
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": [
+      "error",
+      {
+        "arrays": "only-multiline",
+        "objects": "only-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline",
+        "functions": "only-multiline",
+        "enums": "only-multiline",
+        "generics": "only-multiline",
+        "tuples": "only-multiline"
+      }
+    ],
+    // Annoying "bug" introduced into this plugin
+    // causing all types to have to be imported via
+    // `import type`. See Here: https://github.com/import-js/eslint-plugin-import/issues/2187
+    "import/named": "off",
+    "import/order": [
+      // Enfore Import ordering
+      "error",
+      {
+        // Place '~/**' imports before relative imports
+        "pathGroups": [
+          {
+            "pattern": "@/**",
+            "group": "sibling",
+            "position": "before"
+          },
+          {
+            "pattern": "~/**",
+            "group": "sibling",
+            "position": "before"
+          }
+        ],
+        // Sort alpabetically (sorts based on path not member name)
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": false
+        },
+        // Dont newline within import blocks
+        "newlines-between": "never"
+      }
+    ],
+    "import/newline-after-import": [
+      "error",
+      {
+        "count": 1
+      }
+    ],
+    // ensure sort-imports is off to make sure we don't conflict with import/order at all
+    "sort-imports": [
+      "off"
+    ],
+    "camelcase": "off",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": [
+      "error"
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+---
+
+name: 'Test local github actions'
+
+on:
+  pull_request:
+    paths:
+      - .github/actions/*
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    name: 'Test local github actions'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Install BATS'
+        run: brew install bats-core
+
+      - name: 'Run tests'
+        run: bats -r .github/actions/*/*.bats
